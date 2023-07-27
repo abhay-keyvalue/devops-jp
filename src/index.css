@@ -1,13 +1,52 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+	background-color: #333;
+  background-image: url('./assets/thanos.jpg');
+  background-size:cover;
+}
+
+.app {
+	font-family: "Open Sans", Verdana, sans-serif;
+}
+
+h1 {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+a {
+	display: inline-block;
+	margin-top: 8px;
+}
+
+.thanos {
+	position: relative;
+	top: -20px;
+}
+
+.logo {
+	height: 40vmin;
+	pointer-events: none;
+	width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.logo {
+		animation: logo-spin infinite 20s linear;
+	}
+}
+
+@keyframes logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
