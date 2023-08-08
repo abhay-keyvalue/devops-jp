@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     getData();
-    const pollingInterval = setInterval(getData, 5000000);
+    const pollingInterval = setInterval(getData, 5000);
     return () => clearInterval(pollingInterval);
   }, []);
 

@@ -33,7 +33,7 @@ const styles = {
     color: '#FFF',
     fontFamily: 'sans-serif',
     border: '2px solid rgb(180,180,180)',
-    height: '70px',
+    height: '60px',
     overflow: 'hidden',
     zIndex: 2,
   },
