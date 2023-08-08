@@ -1,0 +1,50 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: leaderboard-fe-websecure
+  namespace: opsventure
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`leaderboard.opsverse.kvsandbox.link`) 
+      kind: Rule
+      priority: 20
+      services:
+        - name: leaderboard-fe
+          port: 80
+  tls:
+    secretName: opsventure-leaderboard-fe
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: leaderboard-fe-web
+  namespace: opsventure
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`leaderboard.opsverse.kvsandbox.link`) && PathPrefix(`/`)
+      kind: Rule
+      priority: 20
+      middlewares:
+        - name: http-to-https
+          namespace: traefik  
+      services:
+        - name: leaderboard-fe
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+ name: opsventure-leaderboard-fe
+ namespace: opsventure
+spec:
+ secretName: opsventure-leaderboard-fe
+ issuerRef:
+   name: letsencrypt
+   kind: ClusterIssuer
+ dnsNames:
+  - "leaderboard.opsverse.kvsandbox.link"
+
