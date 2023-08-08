@@ -26,15 +26,16 @@ const styles = {
     alignItems: 'center',
     padding: '10px',
     margin: '20px',
-    borderRadius: '2px',
+    borderRadius: '5px',
     background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)',
-    backdropFilter: 'blur(50.5)',
+    backdropFilter: 'blur(120.5)',
     fontSize: '16px',
     color: '#FFF',
     fontFamily: 'sans-serif',
-    border: '2px solid rgb(120,120,120)',
+    border: '2px solid rgb(180,180,180)',
     height: '70px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    zIndex: 2,
   },
   position: {
     display: 'flex',
@@ -50,6 +51,7 @@ const styles = {
     width: '300px',
     fontSize: '18px',
     color: '#FFF',
+    textTransform: "uppercase",
   },
   rating: {
     display: 'flex',

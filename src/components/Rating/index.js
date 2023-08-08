@@ -14,7 +14,7 @@ const Rating = (props) => {
     <div style={styles.container}>
       {stoneArray?.map((item, index) => {
         return (
-          <div style={styles.gemContainer}>
+          <div key={item} style={styles.gemContainer}>
             <img
               style={styles.image}
               src={rating > index ? item : gemDisabled}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import snapSoundEffect from "./assets/thanos_snap_sound.mp3";
+import background from "./assets/background.jpg";
+import close from "./assets/close.png";
 import title from "./assets/avengers_assemble.png";
 import g1 from "./assets/g1.png";
 import g2 from "./assets/g2.png";
@@ -16,15 +18,18 @@ const App = () => {
   const snapSound = new Audio(snapSoundEffect);
 
   const [leaderBoardData, setLeaderBoardList] = useState([]);
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [teamId, setTeamId] = useState("");
+  const [keyCode, setKeyCode] = useState("");
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     getData();
-    const pollingInterval = setInterval(getData, 5000);
+    const pollingInterval = setInterval(getData, 5000000);
     return () => clearInterval(pollingInterval);
   }, []);
 
   const playSound = () => {
-    console.log("snapSound", snapSound);
     if (snapSound) {
       snapSound?.play();
     }
@@ -33,12 +38,13 @@ const App = () => {
   const getData = () => {
     fetch("https://champion.opsverse.kvsandbox.link/pointstable")
       .then((response) => {
-        console.log("res", response);
         return response.json();
       })
       .then((data) => {
-        console.log("data", data);
         setLeaderBoardList(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
       });
   };
 
@@ -92,8 +98,72 @@ const App = () => {
     return g0;
   };
 
+  const getKeyCode = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ team_id: teamId, secret_code: keyCode }),
+    };
+    fetch(
+      "https://champion.opsverse.kvsandbox.link/leaderboard",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => setResponse(data?.message || ''));
+  };
+
+  const openPopup = () => {
+    setShowPopUp((prevShowPopUp) => !prevShowPopUp);
+  };
+
+  const renderPopUp = () => {
+    return (
+      <div style={styles.popupBg}>
+        <div
+          style={
+            response?.length > 0
+              ? styles.popUpContainerLarge
+              : styles.popUpContainer
+          }
+        >
+          <div onClick={() => {setShowPopUp(false); setResponse('')}} style={styles.close}>
+            <img style={styles.closeButton} src={close}  alt="Logo"/>
+          </div>
+          {response?.length > 0 ? (
+            <div>{response}</div>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={teamId}
+                style={styles.inputText}
+                placeholder="Enter your team id"
+                onChange={(event) => {
+                  setTeamId(event.target.value);
+                }}
+              />
+              <input
+                type="text"
+                value={keyCode}
+                style={styles.inputText}
+                placeholder="Enter your keyCode"
+                onChange={(event) => {
+                  setKeyCode(event.target.value);
+                }}
+              />
+              <button style={styles.submitButton} onClick={getKeyCode}>
+                Submit
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={styles.container}>
+      {showPopUp && renderPopUp()}
       <div style={styles.row}>
         <div style={styles.leaderBoardContainer}>
           <div style={styles.title}>
@@ -106,19 +176,29 @@ const App = () => {
           <div style={styles.leaderBoard}>
             {renderHeader()}
             {leaderBoardData?.map((data, index) => {
-              return <LeaderBoardCard data={{ ...data, position: index }} />;
+              return (
+                <LeaderBoardCard
+                  key={data?.team_id}
+                  data={{ ...data, position: index }}
+                />
+              );
             })}
           </div>
         </div>
         <div style={styles.snapContainer}>
-          <div onClick={playSound} style={styles.gImageContainer} >
+          <div onClick={playSound} style={styles.gImageContainer}>
             <img style={styles.image} src={getImageName()} alt="Logo" />
           </div>
           <div style={styles.winnerTextContainer}>
-          {(leaderBoardData?.length>0 && leaderBoardData[0]?.stage_curr === '6') ?`WOHOO!  ${leaderBoardData[0]?.team_id}  IS THE WINNER 🎉`: null}
+            {leaderBoardData?.length > 0 &&
+            leaderBoardData[0]?.stage_curr === "6"
+              ? `WOHOO!  ${leaderBoardData[0]?.team_id}  IS THE WINNER 🎉`
+              : null}
           </div>
         </div>
-        <br />
+        <div style={styles.keycodeButton} onClick={openPopup}>
+          <button className="glow-on-hover">ADD KEYCODE</button>
+        </div>
       </div>
     </div>
   );
@@ -133,6 +213,7 @@ const styles = {
     padding: "60px",
     fontFamily: "sans-serif",
     overflow: "hidden",
+    position: "relative",
   },
   title: {
     width: "480px",
@@ -172,12 +253,13 @@ const styles = {
     padding: "10px",
     margin: "20px",
     fontSize: "16px",
+    borderRadius: "5px",
     background:
       "linear-gradient(130deg, rgba(255, 86, 246, 0.40) 18.31%, rgba(185, 54, 238, 0.40) 43.26%, rgba(59, 172, 226, 0.40) 85.44%, rgba(64, 106, 255, 0.40) 100%)",
     boxShadow: "0px 4px 97px 0px rgba(255, 86, 246, 0.51)",
     backdropFilter: "blur(96px)",
     color: "#FFF",
-    border: "2px solid rgb(120,120,120)",
+    border: '2px solid rgb(180,180,180)',
     height: "60px",
   },
   position: {
@@ -207,9 +289,9 @@ const styles = {
   },
   snapContainer: {
     display: "flex",
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     height: "100vh",
     padding: "20px",
     width: "35%",
@@ -222,9 +304,93 @@ const styles = {
     color: "#FFF",
     fontSize: "24px",
     fontWeight: 700,
-    marginTop: '30px',
-    height: '50px',
-    marginBottom: '130px'
+    marginTop: "30px",
+    height: "50px",
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  keycodeButton: {
+    position: "absolute",
+    zIndex: 2,
+    top: '40px',
+    right: '40px',
+    fontSize: '20px',
+    fontWeight: 600
+  },
+  popupBg: {
+    position: "absolute",
+    zIndex: 3,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  popUpContainer: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "500px",
+    height: "300px",
+    borderRadius: "8px",
+    backgroundColor: "#FFF",
+    padding: "20px",
+    backgroundImage: `url(${background})`,
+  },
+  popUpContainerLarge: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "8px",
+    backgroundColor: "#FFF",
+    padding: "20px",
+    margin: '40px',
+    maxWidth: '60%'
+  },
+  close: {
+    position: "absolute",
+    zIndex: 2,
+    top: "5px",
+    right: "5px",
+  },
+  inputText: {
+    width: "400px",
+    height: "50px",
+    backdropFilter: "blur(96px)",
+    padding: "8px",
+    border: "2px solid rgb(120,120,120)",
+    borderRadius: "3px",
+    marginBottom: "20px",
+    fontSize: '16px',
+    color: '#FFF',
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)',
+  },
+  submitButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "400px",
+    height: "50px",
+    border: "0px solid rgb(120,120,120)",
+    borderRadius: "6px",
+    fontSize: '18px',
+    fontWeight: 500,
+    textTransform: "uppercase",
+    marginTop: "12px",
+    cursor: 'pointer',
+    color: '#FFF',
+    background: "rgba(255, 86, 246, 0.60)",
+  },
+  closeButton: {
+    width: '24px',
+    height: '24px',
   }
 };
 
