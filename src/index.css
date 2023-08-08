@@ -5,8 +5,8 @@
 }
 
 body {
-	background-color: #333;
-  background-image: url('./assets/thanos.jpg');
+  background-color: #333;
+  background-image: url('./assets/background.jpg');
   background-size:cover;
 }
 
@@ -23,11 +23,6 @@ h1 {
 a {
 	display: inline-block;
 	margin-top: 8px;
-}
-
-.thanos {
-	position: relative;
-	top: -20px;
 }
 
 .logo {
