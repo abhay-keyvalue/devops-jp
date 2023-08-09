@@ -85,6 +85,20 @@ a {
     top: 0;
     border-radius: 10px;
 }
+  
+  .bounce {
+	transition: transform 0.3s ease-in-out;
+	animation: bounceAnimation 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  @keyframes bounceAnimation {
+	0%, 100% {
+	  transform: translateY(0);
+	}
+	50% {
+	  transform: translateY(-70px);
+	}
+  }
 
 
 @media (prefers-reduced-motion: no-preference) {

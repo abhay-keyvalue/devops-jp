@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import snapSoundEffect from "./assets/thanos_snap_sound.mp3";
-import background from "./assets/background.jpg";
 import keyvalue from "./assets/keyvalue.png";
 import close from "./assets/close.png";
-import title from "./assets/avengers_assemble.png";
+import title from "./assets/Into_the_OpsVerse.png";
 import g1 from "./assets/g1.png";
 import g2 from "./assets/g2.png";
 import g3 from "./assets/g3.png";
@@ -23,12 +22,27 @@ const App = () => {
   const [teamId, setTeamId] = useState("");
   const [keyCode, setKeyCode] = useState("");
   const [response, setResponse] = useState("");
+  const [leadingTeam, setLeadingTeam] = useState({});
+  const [isBouncing, setIsBouncing] = useState(false);
 
   useEffect(() => {
     getData();
     const pollingInterval = setInterval(getData, 5000);
     return () => clearInterval(pollingInterval);
   }, []);
+
+  useEffect(() => {
+    if(leaderBoardData?.length > 0){
+      setLeadingTeam(leaderBoardData[0])
+    }
+  }, [JSON.stringify(leaderBoardData)]);
+
+  useEffect(() => {
+    setIsBouncing(true);
+     setTimeout(() => {
+      setIsBouncing(false)
+     }, 5000);
+  }, [JSON.stringify(leadingTeam)]);
 
   const playSound = () => {
     if (snapSound) {
@@ -47,34 +61,6 @@ const App = () => {
       .catch((error) => {
         console.log("error", error);
       });
-  };
-
-  const renderHeader = () => {
-    return (
-      <div style={styles.leaderBoardHeader}>
-        <div style={styles.position}>
-          <span>POS.</span>
-        </div>
-        <div style={styles.teamName}>
-          <span>TEAM</span>
-        </div>
-        <div style={styles.gemTitle}>
-          <span>Reality</span>
-        </div>
-        <div style={styles.gemTitle}>
-          <span>Time</span>
-        </div>
-        <div style={styles.gemTitle}>
-          <span>Power</span>
-        </div>
-        <div style={styles.gemTitle}>
-          <span>Space</span>
-        </div>
-        <div style={styles.gemTitle}>
-          <span>Mind</span>
-        </div>
-      </div>
-    );
   };
 
   const getImageName = () => {
@@ -117,6 +103,34 @@ const App = () => {
     setShowPopUp((prevShowPopUp) => !prevShowPopUp);
   };
 
+  const renderHeader = () => {
+    return (
+      <div style={styles.leaderBoardHeader}>
+        <div style={styles.position}>
+          <span>POS.</span>
+        </div>
+        <div style={styles.teamName}>
+          <span>TEAM</span>
+        </div>
+        <div style={styles.gemTitle}>
+          <span>Reality</span>
+        </div>
+        <div style={styles.gemTitle}>
+          <span>Time</span>
+        </div>
+        <div style={styles.gemTitle}>
+          <span>Power</span>
+        </div>
+        <div style={styles.gemTitle}>
+          <span>Space</span>
+        </div>
+        <div style={styles.gemTitle}>
+          <span>Mind</span>
+        </div>
+      </div>
+    );
+  };
+
   const renderPopUp = () => {
     return (
       <div style={styles.popupBg}>
@@ -134,6 +148,7 @@ const App = () => {
             <div style={styles.responseText}>{response}</div>
           ) : (
             <>
+              <div style={styles.popupTitle}>ADD KEYCODE</div>
               <input
                 type="text"
                 value={teamId}
@@ -189,7 +204,7 @@ const App = () => {
           </div>
         </div>
         <div style={styles.snapContainer}>
-          <div onClick={playSound} style={styles.gImageContainer}>
+          <div className={isBouncing? 'bounce':''} onClick={playSound} style={styles.gImageContainer}>
             <img style={styles.image} src={getImageName()} alt="Logo" />
           </div>
           <div style={styles.winnerTextContainer}>
@@ -328,7 +343,7 @@ const styles = {
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: "rgba(0,0,0,0.6)",
+    backgroundColor: "rgba(255,255,255,0.1)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -342,9 +357,8 @@ const styles = {
     width: "500px",
     height: "300px",
     borderRadius: "8px",
-    backgroundColor: "#FFF",
-    padding: "20px",
-    backgroundImage: `url(${background})`,
+    backgroundColor: "#20083B",
+    padding: "40px",
   },
   popUpContainerLarge: {
     position: "relative",
@@ -353,10 +367,11 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
-    backgroundColor: "#FFF",
+    backgroundColor: "#20083B",
+    color: '#FFF',
     padding: "20px",
     margin: '40px',
-    maxWidth: '60%'
+    maxWidth: '60%',
   },
   close: {
     position: "absolute",
@@ -364,12 +379,20 @@ const styles = {
     top: "10px",
     right: "10px",
   },
+  popupTitle: {
+    fontSize: '20px',
+    fontWeight: '600',
+    width: "400px",
+    textAlign: 'left',
+    color: '#FFF',
+    marginBottom: '15px'
+  },
   inputText: {
     width: "400px",
     height: "50px",
     backdropFilter: "blur(96px)",
     padding: "8px",
-    border: "2px solid rgb(120,120,120)",
+    border: "2px solid rgb(160,160,160)",
     borderRadius: "3px",
     marginBottom: "20px",
     fontSize: '16px',
@@ -385,19 +408,20 @@ const styles = {
     fontWeight: '500',
     border: "0px solid rgb(120,120,120)",
     borderRadius: "6px",
-    fontSize: '18px',
+    fontSize: '16px',
     textTransform: "uppercase",
     marginTop: "12px",
     cursor: 'pointer',
     color: '#FFF',
-    background: "rgba(255, 86, 246, 0.60)",
+    background: "rgba(185, 54, 238, 0.40)",
   },
   closeButton: {
     width: '24px',
     height: '24px',
+    cursor: 'pointer',
   },
   responseText: {
-    paddingTop: '15px',
+    paddingTop: '20px',
     padding: '10px'
   }
 };
