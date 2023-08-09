@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import snapSoundEffect from "./assets/thanos_snap_sound.mp3";
 import background from "./assets/background.jpg";
+import keyvalue from "./assets/keyvalue.png";
 import close from "./assets/close.png";
 import title from "./assets/avengers_assemble.png";
 import g1 from "./assets/g1.png";
@@ -175,14 +176,16 @@ const App = () => {
           </div>
           <div style={styles.leaderBoard}>
             {renderHeader()}
-            {leaderBoardData?.map((data, index) => {
-              return (
-                <LeaderBoardCard
-                  key={data?.team_id}
-                  data={{ ...data, position: index }}
-                />
-              );
-            })}
+            <div  style={{height: '640px', overflow: 'scroll'}}>
+              {leaderBoardData?.map((data, index) => {
+                return (
+                  <LeaderBoardCard
+                    key={data?.team_id}
+                    data={{ ...data, position: index }}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
         <div style={styles.snapContainer}>
@@ -195,9 +198,10 @@ const App = () => {
               ? `WOHOO!  ${leaderBoardData[0]?.team_id}  IS THE WINNER 🎉`
               : null}
           </div>
+          <button onClick={openPopup} className="glow-on-hover">ADD KEYCODE</button>
         </div>
-        <div style={styles.keycodeButton} onClick={openPopup}>
-          <button className="glow-on-hover">ADD KEYCODE</button>
+        <div style={styles.keyValueIcon} >
+            <img style={styles.image} src={keyvalue} alt="Logo" />
         </div>
       </div>
     </div>
@@ -208,7 +212,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "99vh",
+    height: "100vh",
     width: "100%",
     padding: "60px",
     fontFamily: "sans-serif",
@@ -261,6 +265,7 @@ const styles = {
     color: "#FFF",
     border: '2px solid rgb(180,180,180)',
     height: "60px",
+    marginBottom: '5px'
   },
   position: {
     width: "50px",
@@ -304,18 +309,17 @@ const styles = {
     color: "#FFF",
     fontSize: "24px",
     fontWeight: 700,
-    marginTop: "30px",
+    marginTop: "20px",
     height: "50px",
     textAlign: "center",
-    marginBottom: "20px",
+    marginBottom: "10px",
   },
-  keycodeButton: {
+  keyValueIcon: {
     position: "absolute",
     zIndex: 2,
-    top: '40px',
-    right: '40px',
-    fontSize: '20px',
-    fontWeight: 600
+    top: '30px',
+    right: '20px',
+    width: '160px',
   },
   popupBg: {
     position: "absolute",
