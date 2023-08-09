@@ -191,7 +191,7 @@ const App = () => {
           </div>
           <div style={styles.leaderBoard}>
             {renderHeader()}
-            <div  style={{height: '640px', overflow: 'scroll'}}>
+            <div  style={{height: '640px', overflow: 'hidden'}}>
               {leaderBoardData?.map((data, index) => {
                 return (
                   <LeaderBoardCard
