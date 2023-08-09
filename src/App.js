@@ -153,7 +153,7 @@ const App = () => {
                 type="text"
                 value={teamId}
                 style={styles.inputText}
-                placeholder="Enter your team id"
+                placeholder="ENTER YOUR TEAM ID"
                 onChange={(event) => {
                   setTeamId(event.target.value);
                 }}
@@ -162,7 +162,7 @@ const App = () => {
                 type="text"
                 value={keyCode}
                 style={styles.inputText}
-                placeholder="Enter your keyCode"
+                placeholder="ENTER YOUR KEYCODE"
                 onChange={(event) => {
                   setKeyCode(event.target.value);
                 }}
@@ -395,7 +395,7 @@ const styles = {
     border: "2px solid rgb(160,160,160)",
     borderRadius: "3px",
     marginBottom: "20px",
-    fontSize: '16px',
+    fontSize: '14px',
     color: '#FFF',
     background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)',
   },
