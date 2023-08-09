@@ -131,7 +131,7 @@ const App = () => {
             <img style={styles.closeButton} src={close}  alt="Logo"/>
           </div>
           {response?.length > 0 ? (
-            <div>{response}</div>
+            <div style={styles.responseText}>{response}</div>
           ) : (
             <>
               <input
@@ -361,8 +361,8 @@ const styles = {
   close: {
     position: "absolute",
     zIndex: 2,
-    top: "5px",
-    right: "5px",
+    top: "10px",
+    right: "10px",
   },
   inputText: {
     width: "400px",
@@ -382,10 +382,10 @@ const styles = {
     alignItems: "center",
     width: "400px",
     height: "50px",
+    fontWeight: '500',
     border: "0px solid rgb(120,120,120)",
     borderRadius: "6px",
     fontSize: '18px',
-    fontWeight: 500,
     textTransform: "uppercase",
     marginTop: "12px",
     cursor: 'pointer',
@@ -395,6 +395,10 @@ const styles = {
   closeButton: {
     width: '24px',
     height: '24px',
+  },
+  responseText: {
+    paddingTop: '15px',
+    padding: '10px'
   }
 };
 
