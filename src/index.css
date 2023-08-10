@@ -85,10 +85,15 @@ a {
     top: 0;
     border-radius: 10px;
 }
+
   
   .bounce {
 	transition: transform 0.3s ease-in-out;
-	animation: bounceAnimation 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+	animation: bounceAnimation 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  }
+
+  .supportViewWarning {
+    display: none;
   }
   
   @keyframes bounceAnimation {
@@ -106,6 +111,36 @@ a {
 		animation: logo-spin infinite 20s linear;
 	}
 }
+
+@media screen and (max-width: 1300px) {
+  .snapContainer{
+    display: none !important;
+  }
+  .leaderBoardContainer{
+    width: auto !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .snapContainer{
+    display: none !important;
+  }
+  .leaderBoardContainer{
+    display: none !important;
+  }
+  .supportViewWarning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    font-size: large;
+    height: 100vh;
+    text-align: center;
+    font-weight: 600;
+    padding: 20px;
+  }
+}
+
 
 @keyframes logo-spin {
 	from {

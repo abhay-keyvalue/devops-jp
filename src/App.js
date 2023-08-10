@@ -19,6 +19,7 @@ const App = () => {
 
   const [leaderBoardData, setLeaderBoardList] = useState([]);
   const [showPopUp, setShowPopUp] = useState(false);
+  const [showLoadPopup, setShowLoadPopup] = useState(true);
   const [teamId, setTeamId] = useState("");
   const [keyCode, setKeyCode] = useState("");
   const [response, setResponse] = useState("");
@@ -32,16 +33,19 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if(leaderBoardData?.length > 0){
-      setLeadingTeam(leaderBoardData[0])
+    if (leaderBoardData?.length > 0) {
+      setLeadingTeam(leaderBoardData[0]);
     }
   }, [JSON.stringify(leaderBoardData)]);
 
   useEffect(() => {
     setIsBouncing(true);
-     setTimeout(() => {
-      setIsBouncing(false)
-     }, 5000);
+    if (!showLoadPopup) {
+      playSound();
+    }
+    setTimeout(() => {
+      setIsBouncing(false);
+    }, 5000);
   }, [JSON.stringify(leadingTeam)]);
 
   const playSound = () => {
@@ -96,7 +100,7 @@ const App = () => {
       requestOptions
     )
       .then((response) => response.json())
-      .then((data) => setResponse(data?.message || ''));
+      .then((data) => setResponse(data?.message || ""));
   };
 
   const openPopup = () => {
@@ -141,8 +145,14 @@ const App = () => {
               : styles.popUpContainer
           }
         >
-          <div onClick={() => {setShowPopUp(false); setResponse('')}} style={styles.close}>
-            <img style={styles.closeButton} src={close}  alt="Logo"/>
+          <div
+            onClick={() => {
+              setShowPopUp(false);
+              setResponse("");
+            }}
+            style={styles.close}
+          >
+            <img style={styles.closeButton} src={close} alt="Logo" />
           </div>
           {response?.length > 0 ? (
             <div style={styles.responseText}>{response}</div>
@@ -177,11 +187,28 @@ const App = () => {
     );
   };
 
+  const renderLoadPopUp = () => {
+    return (
+      <div style={styles.popupLoadBg}>
+        <button
+          onClick={() => setShowLoadPopup(false)}
+          className="glow-on-hover"
+        >
+          LOAD DATA
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div style={styles.container}>
       {showPopUp && renderPopUp()}
+      {showLoadPopup && renderLoadPopUp()}
       <div style={styles.row}>
-        <div style={styles.leaderBoardContainer}>
+        <div
+          className="leaderBoardContainer"
+          style={styles.leaderBoardContainer}
+        >
           <div style={styles.title}>
             <img style={styles.image} src={title} alt="Logo" />
           </div>
@@ -191,7 +218,7 @@ const App = () => {
           </div>
           <div style={styles.leaderBoard}>
             {renderHeader()}
-            <div  style={{height: '640px', overflow: 'hidden'}}>
+            <div style={{ height: "640px", overflow: "hidden" }}>
               {leaderBoardData?.map((data, index) => {
                 return (
                   <LeaderBoardCard
@@ -203,8 +230,12 @@ const App = () => {
             </div>
           </div>
         </div>
-        <div style={styles.snapContainer}>
-          <div className={isBouncing? 'bounce':''} onClick={playSound} style={styles.gImageContainer}>
+        <div className="snapContainer" style={styles.snapContainer}>
+          <div
+            className={isBouncing && !showLoadPopup ? "bounce" : ""}
+            onClick={playSound}
+            style={styles.gImageContainer}
+          >
             <img style={styles.image} src={getImageName()} alt="Logo" />
           </div>
           <div style={styles.winnerTextContainer}>
@@ -213,10 +244,15 @@ const App = () => {
               ? `WOHOO!  ${leaderBoardData[0]?.team_id}  IS THE WINNER 🎉`
               : null}
           </div>
-          <button onClick={openPopup} className="glow-on-hover">ADD KEYCODE</button>
+          <button onClick={openPopup} className="glow-on-hover">
+            ADD KEYCODE
+          </button>
         </div>
-        <div style={styles.keyValueIcon} >
-            <img style={styles.image} src={keyvalue} alt="Logo" />
+        <div style={styles.keyValueIcon}>
+          <img style={styles.image} src={keyvalue} alt="Logo" />
+        </div>
+        <div className="supportViewWarning">
+          THIS PAGE IS ONLY SUPPORTED IN DESKTOP VIEW
         </div>
       </div>
     </div>
@@ -278,9 +314,9 @@ const styles = {
     boxShadow: "0px 4px 97px 0px rgba(255, 86, 246, 0.51)",
     backdropFilter: "blur(96px)",
     color: "#FFF",
-    border: '2px solid rgb(180,180,180)',
+    border: "2px solid rgb(180,180,180)",
     height: "60px",
-    marginBottom: '5px'
+    marginBottom: "5px",
   },
   position: {
     width: "50px",
@@ -332,9 +368,9 @@ const styles = {
   keyValueIcon: {
     position: "absolute",
     zIndex: 2,
-    top: '30px',
-    right: '20px',
-    width: '160px',
+    top: "30px",
+    right: "20px",
+    width: "160px",
   },
   popupBg: {
     position: "absolute",
@@ -344,6 +380,18 @@ const styles = {
     bottom: 0,
     left: 0,
     backgroundColor: "rgba(255,255,255,0.1)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  popupLoadBg: {
+    position: "absolute",
+    zIndex: 3,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "#20083B",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -368,10 +416,10 @@ const styles = {
     alignItems: "center",
     borderRadius: "8px",
     backgroundColor: "#20083B",
-    color: '#FFF',
+    color: "#FFF",
     padding: "20px",
-    margin: '40px',
-    maxWidth: '60%',
+    margin: "40px",
+    maxWidth: "60%",
   },
   close: {
     position: "absolute",
@@ -380,12 +428,12 @@ const styles = {
     right: "10px",
   },
   popupTitle: {
-    fontSize: '20px',
-    fontWeight: '600',
+    fontSize: "20px",
+    fontWeight: "600",
     width: "400px",
-    textAlign: 'left',
-    color: '#FFF',
-    marginBottom: '15px'
+    textAlign: "left",
+    color: "#FFF",
+    marginBottom: "15px",
   },
   inputText: {
     width: "400px",
@@ -395,9 +443,10 @@ const styles = {
     border: "2px solid rgb(160,160,160)",
     borderRadius: "3px",
     marginBottom: "20px",
-    fontSize: '14px',
-    color: '#FFF',
-    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)',
+    fontSize: "14px",
+    color: "#FFF",
+    background:
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)",
   },
   submitButton: {
     display: "flex",
@@ -405,25 +454,25 @@ const styles = {
     alignItems: "center",
     width: "400px",
     height: "50px",
-    fontWeight: '500',
+    fontWeight: "500",
     border: "0px solid rgb(120,120,120)",
     borderRadius: "6px",
-    fontSize: '16px',
+    fontSize: "16px",
     textTransform: "uppercase",
     marginTop: "12px",
-    cursor: 'pointer',
-    color: '#FFF',
+    cursor: "pointer",
+    color: "#FFF",
     background: "rgba(185, 54, 238, 0.40)",
   },
   closeButton: {
-    width: '24px',
-    height: '24px',
-    cursor: 'pointer',
+    width: "24px",
+    height: "24px",
+    cursor: "pointer",
   },
   responseText: {
-    paddingTop: '20px',
-    padding: '10px'
-  }
+    paddingTop: "20px",
+    padding: "10px",
+  },
 };
 
 export default App;
