@@ -46,7 +46,7 @@ const App = () => {
     setTimeout(() => {
       setIsBouncing(false);
     }, 5000);
-  }, [JSON.stringify(leadingTeam)]);
+  }, [JSON.stringify(leadingTeam), showLoadPopup]);
 
   const playSound = () => {
     if (snapSound) {
