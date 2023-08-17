@@ -40,20 +40,35 @@
 
     <!-- Welcome -->
     <div class="container mb-5">
-        <div class="row center center-align">
-            <h1 class="overlay-text center animated bounce"></h1>
+        <div class="row center center-align marginTop">
+            <h1 class="overlay-text center animated bounce">Mone athu locka</h1>
         </div>
         <div class="overlay-text animated bounce">
             <div class="row center">
                 <!-- Heading -->
                 <!-- <h2 class="center heading-underline">Unfortunately it was of no use.</h2> -->
             </div>
-            <div>
-                <center>
-                <video width="820" autoplay loop>
+            <div class="videoContainer">
+                <video width="800" autoplay loop muted id="videoTest">
                     <source src="assets/img/damone.mp4" type="video/mp4">
-                  </video></center> 
-            </div>
+                </video>
+                <div id="conditionalDiv" style="display: flex;" class="overlay">
+                    <img width="200"  src="assets/img/sound.png" class="soundImage">
+                </div>
+           </div>
+
+    <script>
+        var video = document.getElementById("videoTest");
+        // Add a mousemove event listener to the document
+        document.addEventListener("click", function() {
+            // Play the video if it's not already playing
+            console.log('video', video.muted)
+            if (video.muted) {
+                video.muted = false;
+                conditionalDiv.style.display = "none";
+            }
+        });
+    </script>
             <!-- Content -->
             <!-- <div class="row center">
                 <h5>This is not the page you were looking for.</h5>
@@ -87,7 +102,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
         crossorigin="anonymous"></script>
     <script src="assets/js/index.js"></script>
-    <script src="https://dunggramer.github.io/disable-devtool/disable-devtool.min.js" defer></script>
+    <!-- <script src="https://dunggramer.github.io/disable-devtool/disable-devtool.min.js" defer></script> -->
 
 </body>
 
