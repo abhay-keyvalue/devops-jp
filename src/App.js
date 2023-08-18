@@ -194,7 +194,7 @@ const App = () => {
           onClick={() => setShowLoadPopup(false)}
           className="glow-on-hover"
         >
-          LOAD DATA
+          INTO THE OPSVERSE
         </button>
       </div>
     );
