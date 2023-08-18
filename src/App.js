@@ -393,7 +393,6 @@ const styles = {
     height: "100vh",
     padding: "20px",
     width: "35%",
-    textTransform: "uppercase",
   },
   gImageContainer: {
     height: "60vh",
