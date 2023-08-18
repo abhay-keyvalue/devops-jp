@@ -158,14 +158,14 @@ a {
     backdrop-filter: blur(96px);
     color: #FFF;
     border: 2px solid rgb(180, 180, 180);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 15px;
   }
   .pointTableRow {
     display: flex;
     flex-direction: row;
     padding: 15px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 5px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%);
     backdrop-filter: blur(120.5px);
