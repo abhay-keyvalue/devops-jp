@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import snapSoundEffect from "./assets/thanos_snap_sound.mp3";
 import keyvalue from "./assets/keyvalue.png";
 import close from "./assets/close.png";
-import invalid from "./assets/invalid.png";
+import invalid from "./assets/invalid2.gif";
 import title from "./assets/Into_the_OpsVerse.png";
 import g1 from "./assets/g1.png";
 import g2 from "./assets/g2.png";
@@ -156,8 +156,11 @@ const App = () => {
             <img style={styles.closeButton} src={close} alt="Logo" />
           </div>
           {response?.length > 0 ? (
-            response === "Invalid team Id Dumbass" ? (
-              <img style={styles.invalidImage} src={invalid} alt="Logo" />
+            response.includes("Dumbass") ? (
+              <>
+                <img style={styles.invalidImage} src={invalid} alt="Logo" />
+                <div style={styles.invalidText}>Invalid entry. Please try again.</div>
+              </>
             ) : (
               <div style={styles.responseText}>{response}</div>
             )
@@ -191,7 +194,7 @@ const App = () => {
       </div>
     );
   };
-
+  
   const renderLoadPopUp = () => {
     return (
       <div style={styles.popupLoadBg}>
