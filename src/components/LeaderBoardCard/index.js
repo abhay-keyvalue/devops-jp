@@ -51,7 +51,6 @@ const styles = {
     width: '300px',
     fontSize: '18px',
     color: '#FFF',
-    textTransform: "uppercase",
   },
   rating: {
     display: 'flex',
