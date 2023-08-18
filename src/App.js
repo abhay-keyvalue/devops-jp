@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import snapSoundEffect from "./assets/thanos_snap_sound.mp3";
 import keyvalue from "./assets/keyvalue.png";
 import close from "./assets/close.png";
+import invalid from "./assets/invalid.png";
 import title from "./assets/Into_the_OpsVerse.png";
 import g1 from "./assets/g1.png";
 import g2 from "./assets/g2.png";
@@ -155,7 +156,11 @@ const App = () => {
             <img style={styles.closeButton} src={close} alt="Logo" />
           </div>
           {response?.length > 0 ? (
-            <div style={styles.responseText}>{response}</div>
+            response === "Invalid team Id Dumbass" ? (
+              <img style={styles.invalidImage} src={invalid} alt="Logo" />
+            ) : (
+              <div style={styles.responseText}>{response}</div>
+            )
           ) : (
             <>
               <div style={styles.popupTitle}>ADD KEYCODE</div>
@@ -200,11 +205,47 @@ const App = () => {
     );
   };
 
+  const renderMobileView = () => {
+    return (
+      <div className="supportViewWarning">
+        <div className="titleContainer">
+          <img className="imageTitle" src={title} alt="Logo" />
+        </div>
+        <div className="subTitle">
+          Unleash Infinite Power! Assemble your team and embark on an epic
+          adventure!
+        </div>
+        <div className="pointTableHeader">
+          <div className="position">
+            <span>POS.</span>
+          </div>
+          <div className="teamName">
+            <span>TEAM</span>
+          </div>
+          <div className="point">
+            <span>POINT</span>
+          </div>
+        </div>
+        <div className="listView">
+          {leaderBoardData?.map((data, index) => {
+                  return (
+                    <div className="pointTableRow">
+                      <div className="position">{index + 1}</div>
+                      <div className="teamName">{data.team_id}</div>
+                      <div className="point">{data.stage_curr}</div>
+                    </div>
+                  )
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={styles.container}>
       {showPopUp && renderPopUp()}
       {showLoadPopup && renderLoadPopUp()}
-      <div style={styles.row}>
+      <div className="desktopView" style={styles.row}>
         <div
           className="leaderBoardContainer"
           style={styles.leaderBoardContainer}
@@ -251,10 +292,8 @@ const App = () => {
         <div style={styles.keyValueIcon}>
           <img style={styles.image} src={keyvalue} alt="Logo" />
         </div>
-        <div className="supportViewWarning">
-          THIS PAGE IS ONLY SUPPORTED IN DESKTOP VIEW
-        </div>
       </div>
+      {renderMobileView()}
     </div>
   );
 };
@@ -265,7 +304,6 @@ const styles = {
     flexDirection: "column",
     height: "100vh",
     width: "100%",
-    padding: "60px",
     fontFamily: "sans-serif",
     overflow: "hidden",
     position: "relative",
@@ -291,6 +329,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    padding: '60px',
   },
   leaderBoardContainer: {
     display: "flex",
@@ -472,6 +511,10 @@ const styles = {
   responseText: {
     paddingTop: "20px",
     padding: "10px",
+  },
+  invalidImage: {
+    padding: 20,
+    width: 420,
   },
 };
 
