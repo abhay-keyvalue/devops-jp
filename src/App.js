@@ -164,7 +164,6 @@ const App = () => {
             ) : (
               <div style={styles.responseText}>
                 {response?.split('\n')?.map((item)=> {
-                  console.log('item', item)
                   return(
                     <div key={item}>{item}</div>
                   )
