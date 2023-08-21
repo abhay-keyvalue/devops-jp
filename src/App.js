@@ -162,7 +162,14 @@ const App = () => {
                 <div style={styles.invalidText}>Invalid entry. Please try again.</div>
               </>
             ) : (
-              <div style={styles.responseText}>{response}</div>
+              <div style={styles.responseText}>
+                {response?.split('\n')?.map((item)=> {
+                  console.log('item', item)
+                  return(
+                    <div key={item}>{item}</div>
+                  )
+                })}
+              </div>
             )
           ) : (
             <>
@@ -461,6 +468,8 @@ const styles = {
     padding: "20px",
     margin: "40px",
     maxWidth: "60%",
+    minWidth: "200px",
+    minHeight: "100px"
   },
   close: {
     position: "absolute",
